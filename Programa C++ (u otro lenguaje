@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+enum Estado { q0, q1, q2 };  // Definir los tres estados
+
+// Función para procesar la palabra y comprobar si es aceptada
+bool procesarPalabra(const string& palabra) {
+    Estado estado = q0;  // Comenzamos en el estado inicial q0
+    for (char c : palabra) {
+        switch (estado) {
+            case q0:
+                if (c == 'a') {
+                    estado = q1;  // Transición de q0 a q1 con 'a'
+                } else if (c == 'b') {
+                    estado = q2;  // Transición de q0 a q2 con 'b'
+                } else {
+                    return false;  // Carácter inválido
+                }
+                break;
+            case q1:
+                if (c == 'a') {
+                    estado = q1;  // Transición de q1 a q1 con 'a'
+                } else if (c == 'b') {
+                    estado = q2;  // Transición de q1 a q2 con 'b'
+                } else {
+                    return false;  // Carácter inválido
+                }
+                break;
+            case q2:
+                if (c == 'a') {
+                    estado = q1;  // Transición de q2 a q1 con 'a'
+                } else if (c == 'b') {
+                    estado = q2;  // Transición de q2 a q2 con 'b'
+                } else {
+                    return false;  // Carácter inválido
+                }
+                break;
+        }
+    }
+
+    // El autómata acepta la palabra si termina en el estado q1
+    return (estado == q1);
+}
+
+int main() {
+    vector<string> palabras = {
+        "a", "b", "aa", "ab", "baaa", "aba", "abba", "bbb", "bab", "bbab", "ababa", 
+        "bbbba", "abab", "aab", "abb", "aaaa", "bb", "bbb", "ababa", "aab", 
+        "ba", "bba", "bbba", "bbbb", "baba", "babba", "bbaba", "bbbaba", "bbbab", 
+        "bababa", "bbabab", "ababb", "aabbb", "abbbb", "aabbaa", "bbbaab", "bbbbb", 
+        "aabaaa", "baabb", "bbbbba"
+    };
+    
+    for (const string& palabra : palabras) {
+        cout << "Palabra: " << palabra;
+        if (procesarPalabra(palabra)) {
+            cout << " - Aceptada" << endl;
+        } else {
+            cout << " - NO Aceptada" << endl;
+        }
+    }
+
+    return 0;
+}

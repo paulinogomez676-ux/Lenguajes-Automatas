@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+
+enum Estado { APAGADO, ESPERANDO, COCINANDO, PAUSADO, DETENIDO }; // Definición de los estados
+
+class HornoMicroondas {
+private:
+    Estado estado;
+    int tiempo;
+
+public:
+    HornoMicroondas() : estado(APAGADO), tiempo(0) {}
+
+    void encender() {
+        if (estado == APAGADO) {
+            estado = ESPERANDO;
+            std::cout << "El microondas está encendido y esperando que configures el tiempo.\n";
+        } else {
+            std::cout << "El microondas ya está encendido.\n";
+        }
+    }
+
+    void configurarTiempo(int t) {
+        if (estado == ESPERANDO) {
+            tiempo = t;
+            estado = COCINANDO;
+            std::cout << "El microondas está cocinando por " << tiempo << " segundos.\n";
+        } else if (estado == COCINANDO) {
+            std::cout << "El microondas ya está cocinando. No puedes configurar el tiempo ahora.\n";
+        } else if (estado == PAUSADO) {
+            std::cout << "El microondas está pausado. Reanuda la cocción o deténlo.\n";
+        } else {
+            std::cout << "Primero enciende el microondas.\n";
+        }
+    }
+
+    void pausar() {
+        if (estado == COCINANDO) {
+            estado = PAUSADO;
+            std::cout << "La cocción ha sido pausada.\n";
+        } else {
+            std::cout << "El microondas no está cocinando, no se puede pausar.\n";
+        }
+    }
+
+    void reanudar() {
+        if (estado == PAUSADO) {
+            estado = COCINANDO;
+            std::cout << "La cocción ha sido reanudada.\n";
+        } else {
+            std::cout << "No hay cocción pausada para reanudar.\n";
+        }
+    }
+
+    void detener() {
+        if (estado == COCINANDO || estado == PAUSADO) {
+            estado = DETENIDO;
+            std::cout << "El microondas ha detenido la cocción.\n";
+        } else if (estado == ESPERANDO) {
+            std::cout << "El microondas no está cocinando, ya está detenido.\n";
+        } else {
+            std::cout << "El microondas ya está apagado.\n";
+        }
+    }
+
+    void apagar() {
+        if (estado != APAGADO) {
+            estado = APAGADO;
+            std::cout << "El microondas ha sido apagado.\n";
+        } else {
+            std::cout << "El microondas ya está apagado.\n";
+        }
+    }
+
+    void mostrarEstado() {
+        switch (estado) {
+            case APAGADO:
+                std::cout << "El microondas está apagado.\n";
+                break;
+            case ESPERANDO:
+                std::cout << "El microondas está esperando configuración.\n";
+                break;
+            case COCINANDO:
+                std::cout << "El microondas está cocinando.\n";
+                break;
+            case PAUSADO:
+                std::cout << "El microondas está pausado.\n";
+                break;
+            case DETENIDO:
+                std::cout << "El microondas está detenido.\n";
+                break;
+        }
+    }
+};
+
+int main() {
+    HornoMicroondas horno;
+
+    horno.encender();  // Enciende el microondas
+    horno.configurarTiempo(30);  // Configura el tiempo de cocción a 30 segundos
+    horno.mostrarEstado();  // Muestra el estado actual (cocinando)
+    
+    horno.pausar();  // Pausa la cocción
+    horno.mostrarEstado();  // Muestra el estado actual (pausado)
+    
+    horno.reanudar();  // Reanuda la cocción
+    horno.mostrarEstado();  // Muestra el estado actual (cocinando)
+    
+    horno.detener();  // Detiene el microondas
+    horno.mostrarEstado();  // Muestra el estado actual (detenido)
+
+    horno.apagar();  // Apaga el microondas
+    horno.mostrarEstado();  // Muestra el estado actual (apagado)
+
+    return 0;
+}

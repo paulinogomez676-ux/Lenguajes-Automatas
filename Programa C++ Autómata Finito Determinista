@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cstring>
+#include <cctype>
+
+// Función para verificar si la cadena solo contiene letras
+bool esAlfabetoValido(const char* cadena) {
+    for (int i = 0; i < strlen(cadena); i++) {
+        if (!isalpha(cadena[i])) {
+            return false; // Si encuentra un carácter que no es letra
+        }
+    }
+    return true;
+}
+
+// Función del autómata que verifica que la palabra no comience con "aa"
+bool autómata(const char* cadena) {
+    int estado = 0; // Estado inicial
+    
+    // Recorrer la cadena con un puntero a caracteres
+    for (int i = 0; i < strlen(cadena); i++) {
+        char simbolo = cadena[i];
+        
+        switch (estado) {
+            case 0: // Estado inicial
+                if (simbolo == 'a') {
+                    estado = 1; // Cambiar al estado 1 si es 'a'
+                } else {
+                    estado = 0; // Permanece en estado 0 si es otro carácter
+                }
+                break;
+                
+            case 1: // Primer 'a' leído
+                if (simbolo == 'a') {
+                    return false; // Si el siguiente símbolo es 'a', la palabra no es aceptada
+                } else {
+                    estado = 0; // Si es otro símbolo, vuelve al estado 0
+                }
+                break;
+        }
+    }
+    
+    return true; // La palabra es aceptada si no empieza con "aa"
+}
+
+int main() {
+    char cadena[100];
+    
+    std::cout << "Introduce una cadena: ";
+    std::cin.getline(cadena, 100);
+    
+    if (!esAlfabetoValido(cadena)) {
+        std::cout << "La cadena contiene caracteres no alfabéticos." << std::endl;
+    } else {
+        if (autómata(cadena)) {
+            std::cout << "La cadena es aceptada (no empieza con 'aa')." << std::endl;
+        } else {
+            std::cout << "La cadena no es aceptada (empieza con 'aa')." << std::endl;
+        }
+    }
+    
+    return 0;
+}

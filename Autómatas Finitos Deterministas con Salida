@@ -1,0 +1,44 @@
+class AutomataMoore:
+
+    def __init__(self):
+        # Estado inicial
+        self.estado = "S0"
+
+    def procesar(self, entrada):
+        salida = ""
+
+        for bit in entrada:
+
+            # Estado S0
+            if self.estado == "S0":
+                if bit == "0":
+                    salida += "0"
+                    self.estado = "S0"
+
+                elif bit == "1":
+                    salida += "0"
+                    self.estado = "S1"
+
+            # Estado S1
+            elif self.estado == "S1":
+                if bit == "0":
+                    salida += "0"
+                    self.estado = "S0"
+
+                elif bit == "1":
+                    # Detecta la secuencia 11
+                    salida += "0"
+                    self.estado = "S0"
+
+        return salida
+
+
+# Ejecución del programa
+automata = AutomataMoore()
+
+entrada = input("Ingrese una secuencia de 0 y 1: ")
+
+resultado = automata.procesar(entrada)
+
+print("Entrada:", entrada)
+print("Salida :", resultado)
